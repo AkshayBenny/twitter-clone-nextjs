@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import Leftbar from '../components/LeftbarComponents/Leftbar';
 
 export default function Home() {
   return (
@@ -14,6 +15,9 @@ export default function Home() {
           href='https://pngimg.com/uploads/twitter/twitter_PNG3.png'
         />
       </Head>
+      <main className='max-w-7xl flex min-h-screen mx-auto'>
+        <Leftbar />
+      </main>
     </div>
   );
 }
