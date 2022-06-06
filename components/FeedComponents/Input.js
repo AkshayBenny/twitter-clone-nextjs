@@ -3,14 +3,13 @@ import { EmojiHappyIcon, PhotographIcon } from '@heroicons/react/outline';
 export default function Input() {
   return (
     <div className='border-b p-4 flex space-y-4'>
-      <div className='flex gap-4 pt-4'>
-        <img
-          src='https://avatars.githubusercontent.com/u/87773857?v=4'
-          alt='profile picture'
-          className='rounded-full w-11 h-11  hover:brightness-95 transition cursor-pointer object-cover'
-        />
-      </div>
-      <div className='w-full'>
+      <img
+        src='https://avatars.githubusercontent.com/u/87773857?v=4'
+        alt='profile picture'
+        className='rounded-full w-11 h-11 mt-4  hover:brightness-95 transition cursor-pointer object-cover'
+      />
+
+      <div className='w-full flex-grow'>
         <div className='border-b w-full mb-4'>
           <textarea
             placeholder="What's happening?"
