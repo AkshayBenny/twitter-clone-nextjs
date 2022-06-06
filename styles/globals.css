@@ -6,4 +6,7 @@
   .hover-gray {
     @apply hover:bg-slate-100 transition cursor-pointer;
   }
+  .blue-btn {
+    @apply text-white transition rounded-full bg-sky-400 hover:shadow-md hover:bg-sky-500;
+  }
 }
