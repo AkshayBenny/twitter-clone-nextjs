@@ -21,6 +21,7 @@ export default function IconPanel() {
           height='60'
           width='60'
           src='https://pngimg.com/uploads/twitter/twitter_PNG3.png'
+          alt='twitter logo'
         />
       </div>
       <div>
