@@ -14,6 +14,8 @@ export default function Feed() {
       </div>
       <Input />
       <Post />
+      <Post />
+      <Post />
     </div>
   );
   Feed;
