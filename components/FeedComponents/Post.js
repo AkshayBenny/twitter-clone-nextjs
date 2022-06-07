@@ -32,11 +32,11 @@ export default function Post() {
           <DotsHorizontalIcon className='h-10  p-2 text-gray-600 hover-gray rounded-full' />
         </div>
         <h1 className='text-xl xl:text-2xl pt-4 font-normal text-gray-8 text-gray-60000'>
-          10 fun HTML, CSS and Javascript Projects!
+        Travel is the only thing you buy that makes you richer.
         </h1>
         <img
           className='rounded-3xl pt-2 hover:brightness-90 transition cursor-pointer object-cover'
-          src='https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcSJ_PqcTZvRoGlfBEEAag5DPoKqHRrBtSih-Q&usqp=CAU'
+          src='https://images.unsplash.com/photo-1517760444937-f6397edcbbcd?ixlib=rb-1.2.1&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=1170&q=80'
           alt='post'
         />
         <div className='flex justify-around items-center py-4'>
