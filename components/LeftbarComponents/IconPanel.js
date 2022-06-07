@@ -1,7 +1,6 @@
 import Image from 'next/image';
 import React from 'react';
 import LeftbarMenuItem from './LeftbarMenuItem';
-import User from './User';
 import { HomeIcon } from '@heroicons/react/solid';
 import {
   BellIcon,
@@ -35,7 +34,7 @@ export default function IconPanel() {
         <LeftbarMenuItem text='More' Icon={DotsCircleHorizontalIcon} />
       </div>
       <div className='pt-4'>
-        <button className='w-56 h-12 hidden xl:inline-block text-lg  font-medium text-white transition rounded-full bg-sky-400 hover:shadow-md hover:bg-sky-500'>
+        <button className='w-56 h-12 hidden 2xl:inline-block text-lg  font-medium text-white transition rounded-full bg-sky-400 hover:shadow-md hover:bg-sky-500'>
           Tweet
         </button>
       </div>

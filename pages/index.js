@@ -3,7 +3,7 @@ import Feed from '../components/FeedComponents/Feed';
 import Leftbar from '../components/LeftbarComponents/Leftbar';
 import Rightbar from '../components/RightbarComponents/Rightbar';
 
-export default function Home({ newsResults }) {
+export default function Home({ newsResults, randomUsersToFollow }) {
   return (
     <div>
       <Head>
@@ -17,10 +17,13 @@ export default function Home({ newsResults }) {
           href='https://pngimg.com/uploads/twitter/twitter_PNG3.png'
         />
       </Head>
-      <main className='mx-auto flex min-h-screen lg:pr-4'>
+      <main className='mx-auto flex min-h-screen '>
         <Leftbar />
         <Feed />
-        <Rightbar newsResults={newsResults.articles} />
+        <Rightbar
+          newsResults={newsResults.articles}
+          userResults={randomUsersToFollow}
+        />
       </main>
     </div>
   );
@@ -31,11 +34,14 @@ export async function getServerSideProps() {
     'https://saurav.tech/NewsAPI/top-headlines/category/business/us.json'
   ).then((res) => res.json());
 
+  const randomUsersToFollow = await fetch(
+    'https://randomuser.me/api/?results=6&inc=name,login,picture'
+  ).then((res) => res.json());
+
   return {
     props: {
       newsResults,
+      randomUsersToFollow,
     },
   };
 }
-
-//https://saurav.tech/NewsAPI/top-headlines/category/business/in.json
