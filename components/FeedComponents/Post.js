@@ -32,7 +32,7 @@ export default function Post() {
           <DotsHorizontalIcon className='h-10  p-2 text-gray-600 hover-gray rounded-full' />
         </div>
         <h1 className='text-xl xl:text-2xl pt-4 font-normal text-gray-8 text-gray-60000'>
-        Travel is the only thing you buy that makes you richer.
+          Travel is the only thing you buy that makes you richer.
         </h1>
         <img
           className='rounded-3xl pt-2 hover:brightness-90 transition cursor-pointer object-cover'
