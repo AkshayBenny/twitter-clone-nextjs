@@ -1,10 +1,14 @@
 import { EmojiHappyIcon, PhotographIcon } from '@heroicons/react/outline';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function Input() {
+  const { data:session } = useSession();
+  
   return (
     <div className='border-b p-4 flex space-y-4'>
       <img
-        src='https://avatars.githubusercontent.com/u/87773857?v=4'
+      onClick={signOut}
+        src={session? session.user.image:"https://eschoolz.in/schoolz/backup/app/stories/images/user.png"}
         alt='profile picture'
         className='rounded-full w-11 h-11 mt-4  hover:brightness-95 transition cursor-pointer object-cover'
       />

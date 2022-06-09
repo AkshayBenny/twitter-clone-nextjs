@@ -11,7 +11,9 @@ import {
   InboxIcon,
   UserIcon,
 } from '@heroicons/react/outline';
+import { useSession, signIn } from 'next-auth/react';
 export default function IconPanel() {
+  const { data: session } = useSession();
   return (
     <div>
       <div>
@@ -26,17 +28,30 @@ export default function IconPanel() {
       <div>
         <LeftbarMenuItem text='Home' Icon={HomeIcon} bold={true} />
         <LeftbarMenuItem text='Explore' Icon={HashtagIcon} />
-        <LeftbarMenuItem text='Notifications' Icon={BellIcon} />
-        <LeftbarMenuItem text='Messages' Icon={InboxIcon} />
-        <LeftbarMenuItem text='Bookmarks' Icon={BookmarkIcon} />
-        <LeftbarMenuItem text='Lists' Icon={ClipboardIcon} />
-        <LeftbarMenuItem text='Profile' Icon={UserIcon} />
-        <LeftbarMenuItem text='More' Icon={DotsCircleHorizontalIcon} />
+        {session && (
+          <>
+            <LeftbarMenuItem text='Notifications' Icon={BellIcon} />
+            <LeftbarMenuItem text='Messages' Icon={InboxIcon} />
+            <LeftbarMenuItem text='Bookmarks' Icon={BookmarkIcon} />
+            <LeftbarMenuItem text='Lists' Icon={ClipboardIcon} />
+            <LeftbarMenuItem text='Profile' Icon={UserIcon} />
+            <LeftbarMenuItem text='More' Icon={DotsCircleHorizontalIcon} />
+          </>
+        )}
       </div>
       <div className='pt-4'>
-        <button className='w-56 h-12 hidden 2xl:inline-block text-lg  font-medium text-white transition rounded-full bg-sky-400 hover:shadow-md hover:bg-sky-500'>
-          Tweet
-        </button>
+        {session ? (
+          <button className='w-56 h-12 hidden 2xl:inline-block text-lg  font-medium text-white transition rounded-full bg-sky-400 hover:shadow-md hover:bg-sky-500'>
+            Tweet
+          </button>
+        ) : (
+          <button
+            onClick={signIn}
+            className='w-56 h-12 hidden 2xl:inline-block text-lg  font-medium text-white transition rounded-full bg-sky-400 hover:shadow-md hover:bg-sky-500'
+          >
+            Sign In
+          </button>
+        )}
       </div>
     </div>
   );
