@@ -93,36 +93,40 @@ export default function Input() {
             <img
               src={selectedImage}
               alt='selected image'
-              className='object-cover pb-12 rounded'
+              className={`${
+                loading && 'animate-pulse'
+              } object-cover pb-12 rounded`}
             />
           </div>
         )}
         <div className='flex justify-between items-center'>
           <div className='text-sky-500 flex space-x-2'>
-            <PhotographIcon
-              className='h-10 hover-gray rounded-full p-1'
-              onClick={() => filePickerRef.current.click()}
-            />
-            <input
-              type='file'
-              hidden
-              ref={filePickerRef}
-              onChange={addImageToPost}
-            />
-            <EmojiHappyIcon className='h-10 hover-gray rounded-full p-1' />
+            {!loading && (
+              <>
+                <PhotographIcon
+                  className='h-10 hover-gray rounded-full p-1'
+                  onClick={() => filePickerRef.current.click()}
+                />
+                <input
+                  type='file'
+                  hidden
+                  ref={filePickerRef}
+                  onChange={addImageToPost}
+                />
+                <EmojiHappyIcon className='h-10 hover-gray rounded-full p-1' />
+              </>
+            )}
           </div>
           <div>
-            {loading ? (
-              <p>Loading...</p>
-            ) : (
-              <button
-                disabled={!input.trim()}
-                type='submit'
-                className='bg-sky-400 px-6 py-3 text-lg rounded-full text-white font-bold blue-btn disabled:opacity-50 disabled:cursor-not-allowed'
-              >
-                Tweet
-              </button>
-            )}
+            <button
+              disabled={!input.trim() || loading}
+              type='submit'
+              className={`bg-sky-400 px-6 py-3 text-lg rounded-full text-white font-bold blue-btn disabled:opacity-50 disabled:cursor-not-allowed ${
+                loading && 'animate-bounce'
+              }`}
+            >
+              {loading ? 'Posting...' : 'Tweet'}
+            </button>
           </div>
         </div>
       </div>
