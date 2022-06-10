@@ -4,9 +4,9 @@
 
 @layer components {
   .hover-gray {
-    @apply hover:bg-slate-100 transition cursor-pointer;
+    @apply hover:bg-slate-100 transition cursor-pointer duration-500 ease-out;
   }
   .blue-btn {
-    @apply text-white transition rounded-full bg-sky-400 hover:shadow-md hover:bg-sky-500;
+    @apply text-white transition rounded-full bg-sky-400 duration-500 ease-out hover:shadow-md hover:bg-sky-500;
   }
 }

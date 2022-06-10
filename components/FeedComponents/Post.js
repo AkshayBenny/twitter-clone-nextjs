@@ -18,12 +18,13 @@ import { deleteObject, ref } from 'firebase/storage';
 import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Moment from 'react-moment';
+import { useRecoilState } from 'recoil';
+import { commentModalState } from '../../atom/commentModalAtom';
 import { db, storage } from '../../firebase';
 
 export default function Post({ post }) {
-  
   const { data: session } = useSession();
-
+  const [open, setOpen] = useRecoilState(commentModalState);
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
 
@@ -95,7 +96,10 @@ export default function Post({ post }) {
           />
         )}
         <div className='flex justify-around items-center py-4'>
-          <ChatIcon className='h-12  p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:text-sky-500 hover:bg-sky-50' />
+          <ChatIcon
+            onClick={() => setOpen(!open)}
+            className='h-12  p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:text-sky-500 hover:bg-sky-50'
+          />
           <div className='flex items-center'>
             {hasLiked ? (
               <FilledHeartIcon

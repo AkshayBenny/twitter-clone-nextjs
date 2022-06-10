@@ -1,4 +1,5 @@
 import Head from 'next/head';
+import CommentModal from '../components/CommentModal';
 import Feed from '../components/FeedComponents/Feed';
 import Leftbar from '../components/LeftbarComponents/Leftbar';
 import Rightbar from '../components/RightbarComponents/Rightbar';
@@ -24,6 +25,7 @@ export default function Home({ newsResults, randomUsersToFollow }) {
           newsResults={newsResults.articles}
           userResults={randomUsersToFollow}
         />
+        <CommentModal />
       </main>
     </div>
   );
