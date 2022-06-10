@@ -1,12 +1,23 @@
 import { SparklesIcon } from '@heroicons/react/outline';
-import React from 'react';
+import { useState, useEffect } from 'react';
 import Input from './Input';
 import Post from './Post';
 import { useSession } from 'next-auth/react';
+import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
+import { db } from '../../firebase';
 
 export default function Feed() {
   const { data: session } = useSession();
-  console.log(session);
+  const [posts, setPosts] = useState([]);
+
+  useEffect(() => {
+    const unsubscribe = onSnapshot(
+      query(collection(db, 'posts')),
+      orderBy('timestamp', 'desc'),
+      (snapshot) => setPosts(snapshot.docs)
+    );
+  }, []);
+
   return (
     <div className='2xl:ml-96 sm:ml-14  border-x flex-grow xl:min-w-[576px] '>
       <div className='flex justify-between items-center py-2 px-3 sticky border-b top-0 z-50 bg-white'>
@@ -16,9 +27,9 @@ export default function Feed() {
         </div>
       </div>
       {session && <Input />}
-      <Post />
-      <Post />
-      <Post />
+      {posts.map((post, index) => {
+        return <Post post={post} key={index} />;
+      })}
     </div>
   );
 }
