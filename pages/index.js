@@ -18,7 +18,7 @@ export default function Home({ newsResults, randomUsersToFollow }) {
           href='https://pngimg.com/uploads/twitter/twitter_PNG3.png'
         />
       </Head>
-      <main className='mx-auto flex min-h-screen '>
+      <main className='mx-auto flex min-h-screen bg-red-400'>
         <Leftbar />
         <Feed />
         <Rightbar
