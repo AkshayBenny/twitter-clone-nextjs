@@ -14,10 +14,11 @@ import {
   onSnapshot,
   setDoc,
 } from 'firebase/firestore';
+import { deleteObject, ref } from 'firebase/storage';
 import { signIn, useSession } from 'next-auth/react';
 import { useEffect, useState } from 'react';
 import Moment from 'react-moment';
-import { db } from '../../firebase';
+import { db, storage } from '../../firebase';
 
 export default function Post({ post }) {
   const { data: session } = useSession();
@@ -35,6 +36,13 @@ export default function Post({ post }) {
     } else {
       //redirect to signin page
       signIn();
+    }
+  };
+
+  const deletePost = async () => {
+    if (window.confirm('Are you sure you want to delete this post?')) {
+      await deleteDoc(doc(db, 'posts', post.id));
+      await deleteObject(ref(storage, `posts/${post.id}/image`));
     }
   };
 
@@ -105,7 +113,12 @@ export default function Post({ post }) {
           </div>
           <ShareIcon className='h-12 p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:text-sky-500 hover:bg-sky-50' />
           <ChartBarIcon className='h-12 p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:text-sky-500 hover:bg-sky-50' />
-          <TrashIcon className='h-12  p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:bg-red-50 hover:text-red-500' />
+          {session?.user.uid === post?.data().id && (
+            <TrashIcon
+              onClick={deletePost}
+              className='h-12  p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:bg-red-50 hover:text-red-500'
+            />
+          )}
         </div>
       </div>
     </div>
