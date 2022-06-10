@@ -21,9 +21,12 @@ import Moment from 'react-moment';
 import { db, storage } from '../../firebase';
 
 export default function Post({ post }) {
+  
   const { data: session } = useSession();
+
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
+
   const likePost = async () => {
     if (session) {
       if (hasLiked) {

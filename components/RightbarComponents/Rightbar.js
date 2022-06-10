@@ -2,6 +2,7 @@ import { SearchIcon } from '@heroicons/react/outline';
 import News from './News';
 import { useState } from 'react';
 import RandomUser from './RandomUser';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Rightbar({ newsResults, userResults }) {
   const [newsNumber, setNewsNumber] = useState(3);
@@ -24,11 +25,21 @@ export default function Rightbar({ newsResults, userResults }) {
       </div>
       <div className='text-gray-700 space-y-3 bg-gray-100 rounded-xl pt-2 w-[90%] xl:w-[75%]'>
         <h4 className='font-bold text-xl p-4'>What&apos;s happening ?</h4>
-        <div>
+        <AnimatePresence>
           {newsResults.slice(0, newsNumber).map((news, index) => {
-            return <News key={index} news={news} />;
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <News key={index} news={news} />
+              </motion.div>
+            );
           })}
-        </div>
+        </AnimatePresence>
         <button
           onClick={() => setNewsNumber(newsNumber + 3)}
           className='text-blue-300 pl-4 pb-3 hover:text-blue-400 cursor-pointer transition'
@@ -39,13 +50,23 @@ export default function Rightbar({ newsResults, userResults }) {
 
       <div className='text-gray-700 space-y-3 bg-gray-100 rounded-xl pt-2 w-[90%] xl:w-[75%]'>
         <h4 className='font-bold text-xl p-4'>Who to follow ?</h4>
-        <div>
-          {userResults.results
-            .slice(0, userNumber)
-            .map((user, index) => {
-              return <RandomUser key={index} user={user} />;
-            })}
-        </div>
+
+        <AnimatePresence>
+          {userResults.results.slice(0, userNumber).map((user, index) => {
+            return (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                exit={{ opacity: 0 }}
+                transition={{ duration: 0.5 }}
+              >
+                <RandomUser key={index} user={user} />
+              </motion.div>
+            );
+          })}
+        </AnimatePresence>
+
         <button
           onClick={() => setUserNumber(userNumber + 3)}
           className='text-blue-300 pl-4 pb-3 hover:text-blue-400 cursor-pointer transition'

@@ -5,6 +5,7 @@ import Post from './Post';
 import { useSession } from 'next-auth/react';
 import { collection, onSnapshot, orderBy, query } from 'firebase/firestore';
 import { db } from '../../firebase';
+import { AnimatePresence, motion } from 'framer-motion';
 
 export default function Feed() {
   const { data: session } = useSession();
@@ -27,9 +28,21 @@ export default function Feed() {
         </div>
       </div>
       {session && <Input />}
-      {posts.map((post, index) => {
-        return <Post post={post} key={index} />;
-      })}
+      <AnimatePresence>
+        {posts.map((post, index) => {
+          return (
+            <motion.div
+              key={index}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 1 }}
+            >
+              <Post post={post} key={index} />
+            </motion.div>
+          );
+        })}
+      </AnimatePresence>
     </div>
   );
 }
