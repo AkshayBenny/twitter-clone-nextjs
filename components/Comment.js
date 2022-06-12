@@ -20,26 +20,47 @@ import { useRouter } from 'next/router';
 import { useEffect, useState } from 'react';
 import Moment from 'react-moment';
 import { useRecoilState } from 'recoil';
-import { commentModalState, postIdState } from '../../atom/commentModalAtom';
-import { db, storage } from '../../firebase';
+import { commentModalState, postIdState } from '../atom/commentModalAtom';
+import { db } from '../firebase';
 
-export default function Post({ post }) {
+export default function Comment({ comment, commentId, originalPostId }) {
   const { data: session } = useSession();
   const [open, setOpen] = useRecoilState(commentModalState);
   const [likes, setLikes] = useState([]);
   const [hasLiked, setHasLiked] = useState(false);
   const [postId, setPostId] = useRecoilState(postIdState);
-  const [comments, setComments] = useState([]);
+
   const router = useRouter();
 
-  const likePost = async () => {
+  const likeComment = async () => {
     if (session) {
       if (hasLiked) {
-        await deleteDoc(doc(db, 'posts', post.id, 'likes', session?.user?.uid));
+        await deleteDoc(
+          doc(
+            db,
+            'posts',
+            originalPostId,
+            'comments',
+            commentId,
+            'likes',
+            session?.user?.uid
+          )
+        );
       } else {
-        await setDoc(doc(db, 'posts', post.id, 'likes', session?.user?.uid), {
-          username: session.user.username,
-        });
+        await setDoc(
+          doc(
+            db,
+            'posts',
+            originalPostId,
+            'comments',
+            commentId,
+            'likes',
+            session?.user?.uid
+          ),
+          {
+            username: session.user.username,
+          }
+        );
       }
     } else {
       //redirect to signin page
@@ -47,22 +68,22 @@ export default function Post({ post }) {
     }
   };
 
-  const deletePost = async () => {
-    if (window.confirm('Are you sure you want to delete this post?')) {
-      router.push('/');
-      await deleteDoc(doc(db, 'posts', post.id));
-      if (post.data().image) {
-        await deleteObject(ref(storage, `posts/${post.id}/image`));
-      }
+  const deleteComment = async () => {
+    if (window.confirm('Are you sure you want to delete this comment?')) {
+      //   router.push('/');
+      await deleteDoc(doc(db, 'posts', originalPostId, 'comments', commentId));
+      //   if (post.data().image) {
+      //     await deleteObject(ref(storage, `posts/${post.id}/image`));
+      //   }
     }
   };
 
   useEffect(() => {
     const unsubscribe = onSnapshot(
-      collection(db, 'posts', post.id, 'likes'),
+      collection(db, 'posts', originalPostId, 'comments', commentId, 'likes'),
       (snapshot) => setLikes(snapshot.docs)
     );
-  }, [db]);
+  }, [db, originalPostId, commentId]);
 
   useEffect(() => {
     setHasLiked(
@@ -70,17 +91,10 @@ export default function Post({ post }) {
     );
   }, [likes]);
 
-  useEffect(() => {
-    const unsubscribe = onSnapshot(
-      collection(db, 'posts', post.id, 'comments'),
-      (snapshot) => setComments(snapshot.docs)
-    );
-  }, [comments]);
-
   return (
-    <div className='p-1 sm:p-4 flex gap-4 border-b mt-4'>
+    <div className='p-4 flex gap-4 border-b mt-4 pl-20'>
       <img
-        src={post?.data()?.userImg}
+        src={comment?.userImg}
         alt='profile picture'
         className='rounded-full w-11 h-11  hover:brightness-95 transition cursor-pointer object-cover'
       />
@@ -89,30 +103,27 @@ export default function Post({ post }) {
         <div className='flex justify-between  flex-grow'>
           <div className='flex items-center gap-2'>
             <h1 className='truncate hover:underline cursor-pointer text-xl xl:text-2xl font-bold tracking-wide'>
-              {post?.data()?.name}
+              {comment?.name}
             </h1>
             <p className='truncate text-gray-600 text-lg hover:underline cursor-pointer'>
-              @{post?.data()?.userName}
+              @{comment?.userName}
             </p>
             <p className='truncate text-gray-800 text-base hover:underline cursor-pointer'>
-              - <Moment fromNow>{post?.data()?.timestamp?.toDate()}</Moment>
+              - <Moment fromNow>{comment?.timestamp?.toDate()}</Moment>
             </p>
           </div>
           <DotsHorizontalIcon className='h-10  p-2 text-gray-600 hover-gray rounded-full' />
         </div>
-        <h1
-          onClick={() => router.push(`/posts/${post.id}`)}
-          className='cursor-pointer text-xl xl:text-2xl pt-4 font-normal text-gray-8 text-gray-60000'
-        >
-          {post?.data()?.text}
+        <h1 className='text-xl xl:text-2xl pt-4 font-normal text-gray-8 text-gray-60000'>
+          {comment.comment}
         </h1>
-        {post?.data()?.image && (
+        {/* {comment?.image && (
           <img
             onClick={() => router.push(`/posts/${post.id}`)}
             className='rounded-3xl pt-2 hover:brightness-90 transition cursor-pointer object-cover'
-            src={post?.data()?.image}
+            src={comment?.image}
           />
-        )}
+        )} */}
         <div className='flex justify-around items-center py-4'>
           <div className='flex items-center'>
             <ChatIcon
@@ -126,17 +137,17 @@ export default function Post({ post }) {
               }}
               className='h-12  p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:text-sky-500 hover:bg-sky-50'
             />
-            {comments.length > 0 && <p>{comments.length}</p>}
+            {/* {comments.length > 0 && <p>{comments.length}</p>} */}
           </div>
           <div className='flex items-center'>
             {hasLiked ? (
               <FilledHeartIcon
-                onClick={likePost}
+                onClick={likeComment}
                 className='h-12 p-3 xl:p-2 text-red-600 hover-gray rounded-full hover:text-red-500 hover:bg-red-50'
               />
             ) : (
               <HeartIcon
-                onClick={likePost}
+                onClick={likeComment}
                 className='h-12 p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:text-red-500 hover:bg-red-50'
               />
             )}
@@ -150,9 +161,9 @@ export default function Post({ post }) {
           <div className='flex items-center'>
             <ChartBarIcon className='h-12 p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:text-sky-500 hover:bg-sky-50' />
           </div>
-          {session?.user.uid === post?.data()?.id && (
+          {session?.user?.uid === comment?.userId && (
             <TrashIcon
-              onClick={deletePost}
+              onClick={deleteComment}
               className='h-12  p-3 xl:p-2 text-gray-600 hover-gray rounded-full hover:bg-red-50 hover:text-red-500'
             />
           )}
